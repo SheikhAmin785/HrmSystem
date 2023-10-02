@@ -1,0 +1,31 @@
+﻿@model List<HrmSystem.Models.Increment>
+@{
+    ViewBag.Title = "Increment Information";
+}
+
+<h2>Increment Information</h2>
+
+<table class="table" id="incrementTable">
+    <thead>
+        <tr>
+            <th>IncrementID</th>
+            <th>FirstName</th>
+            <th>LastName</th>
+            <th>Salary</th>
+            <th>IncrementDate</th>
+            <th>IncrementAmount</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var increment in Model)
+        {
+        <tr>
+            <td>@increment.IncrementID</td>
+            <td>@increment.Employee.FirstName @increment.Employee.LastName</td>
+            <td>@increment.Employee.Salary</td>
+            <td>@increment.IncrementDate.ToShortDateString()</td>
+            <td>@increment.IncrementAmount</td>
+        </tr>
+        }
+    </tbody>
+</table>

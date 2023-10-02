@@ -1,0 +1,65 @@
+﻿@model HrmSystem.Models.Increment
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Employee Joining Info</title>
+</head>
+<body>
+    <h2>Employee Joining Info</h2>
+
+    <form id="dateRangeForm">
+        <label for="startDate">Start Date:</label>
+        <input type="date" id="startDate" name="startDate" required>
+
+        <label for="endDate">End Date:</label>
+        <input type="date" id="endDate" name="endDate" required>
+
+        <button type="button" onclick="getEmployeeJoiningInfo()">Get Employees</button>
+    </form>
+
+    <div id="employeeList">
+       
+    </div>
+
+    <script>
+        function getEmployeeJoiningInfo() {
+            var startDate = document.getElementById("startDate").value;
+            var endDate = document.getElementById("endDate").value;
+
+            var xhr = new XMLHttpRequest();
+            xhr.open("GET", "/Employee/EmployeeJoiningInfo?startDate=" + startDate + "&endDate=" + endDate, true);
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                    var employeeList = JSON.parse(xhr.responseText);
+                    displayEmployeeList(employeeList);
+                }
+            };
+            xhr.send();
+        }
+
+        function displayEmployeeList(employeeList) {
+            var employeeListDiv = document.getElementById("employeeList");
+            employeeListDiv.innerHTML = "<h3>Employees who joined between the selected dates:</h3>";
+
+            if (employeeList.length === 0) {
+                employeeListDiv.innerHTML += "<p>No employees found within the selected date range.</p>";
+                return;
+            }
+
+            var ul = document.createElement("ul");
+            for (var i = 0; i < employeeList.length; i++) {
+                var li = document.createElement("li");
+                li.textContent = employeeList[i].FirstName + " " + employeeList[i].LastName;
+                ul.appendChild(li);
+            }
+
+            employeeListDiv.appendChild(ul);
+        }
+    </script>
+</body>
+</html>
+
+
